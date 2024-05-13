@@ -9,6 +9,12 @@ around 30 minutes from fetching time, so the script has been split in two:
 ## Decisions
 - Split scraping file into two and adjust timings
 
+## TODO
+- [ ] Document the data
+- [ ] Answer: Are there delay patterns that can be learned using a machine
+learning model based on the day of the week, time, and route?
+- [x] Find out what can be cut away from tripupdates
+
 # May 12
 
 ## Notes
@@ -20,10 +26,10 @@ file and knowledge transfers
 - Meeting are going to take place every Monday at 9:00 PM
 
 ## TODO
-- Document the data
-- Are there delay patterns that can be learned using a machine learning model
-based on the day of the week, time, and route?
-- Find out what can be cut away from tripupdates
+- [ ] Document the data
+- [ ] Answer: Are there delay patterns that can be learned using a machine
+learning model based on the day of the week, time, and route?
+- [ ] Find out what can be cut away from tripupdates
 
 # May 9
 
@@ -42,6 +48,6 @@ questions that we hope to answer **BY MONDAY**
 - [x] Write a Bash script that runs the Python script and zips the output files
 
 ## TODO
-- Document the data
-- Answer: Are there delay patterns that can be learned using a machine learning
-model based on the day of the week, time, and route?
+- [ ] Document the data
+- [ ] Answer: Are there delay patterns that can be learned using a machine
+learning model based on the day of the week, time, and route?
