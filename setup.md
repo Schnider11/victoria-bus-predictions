@@ -7,12 +7,13 @@ The Python program will automatically create the vehicleupdates and tripupdates
 folders and timestamp everything.
 
 Edit the following two lines as follows:
-- Adjust the parameter of `cd` to where the script resides
+- Adjust the parameter of `cd` to where the scripts resides
 - Adjust the parameter of the Python executable as well
 
 ```bash
-* * * * * ( cd /home/jack/uvic/honors-proj/; /home/jack/miniforge3/envs/ai-ml/bin/python ./update_scraper.py )
-* * * * * ( sleep 30; cd /home/jack/uvic/honors-proj/; /home/jack/miniforge3/envs/ai-ml/bin/python ./update_scraper.py )
+* * * * * ( cd /home/jack/uvic/honors-proj/; /home/jack/miniforge3/envs/ai-ml/bin/python ./vehicle_update_scraper.py )
+* * * * * ( sleep 30; cd /home/jack/uvic/honors-proj/; /home/jack/miniforge3/envs/ai-ml/bin/python ./vehicle_update_scraper.py )
+20 * * * * ( cd /home/jack/uvic/honors-proj/; /home/jack/miniforge3/envs/ai-ml/bin/python ./trip_update_scraper.py )
 ```
 
 The following is to zip the files as you requested. I wrote it to run 5 minutes
