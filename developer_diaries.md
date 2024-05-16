@@ -11,22 +11,6 @@ around 30 minutes from fetching time, so the script has been split in two:
 - No need to cut down tripupdates any more, revert scripts to
 how they were before
 
-## TODO
-- [ ] Document the data
-- [x] Find out what can be cut away from tripupdates
-- [ ] Verify what `IN_TRANSIT_TO` and `STOPPED_AT` mean
-- [ ] Find out how to generate tripupdate information using vehicleupdates
-and the static data. Probably some cross-correlation with the static data
-- [ ] Write a script/program that generates a .csv file from vehicleupdates
-- [ ] Learn about timeserires
-- [ ] Revert scripts to how they were before
-- [ ] Check whether the data reflects the fact that some busses become
-other busses (7 to 21 and vice versa). Check if the vehicle ID remains and
-whether you can trace that relation from the data
-- [ ] Find out what happens to the order of the stops if there is construction,
-does the bus seem like it skipped a number of stops from the data or is there
-a correlation between the old and new stops?
-
 # May 12
 
 ## Notes
@@ -36,10 +20,6 @@ file and knowledge transfers
 
 ## Decisions
 - Meeting are going to take place every Monday at 9:00 PM
-
-## TODO
-- [ ] Document the data
-- [ ] Find out what can be cut away from tripupdates
 
 # May 9
 
@@ -56,6 +36,3 @@ questions that we hope to answer **BY MONDAY**
 		- Are there delay patterns that can be learned using a machine learning
         model based on the day of the week, time, and route?
 - [x] Write a Bash script that runs the Python script and zips the output files
-
-## TODO
-- [ ] Document the data
