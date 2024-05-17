@@ -13,3 +13,5 @@
     - Display all DBs `\l`
     - Conntect to a DB `\c <db_name>`
     - Display all tables of the currently connected DB `\dt`
+    - Create a table using what's in `postgres/create_table.sql`
+    - Load the csv file into the table using `\copy vehicle_data(trip_id,vehicle_id,start_time,start_date,schedule_relationship,route_id,direction_id,speed,current_stop_sequence,current_status,timestamp,congestion_level,stop_id) FROM '/var/lib/postgresql/data/vehicleupdates_2024-05-11.csv' DELIMITER ',' CSV HEADER;`
