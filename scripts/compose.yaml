@@ -1,0 +1,9 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_PASSWORD: transit
+    volumes:
+      - "/home/jack/uvic/honors-proj/pgdata:/var/lib/postgresql/data"
