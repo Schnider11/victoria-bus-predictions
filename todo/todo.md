@@ -1,6 +1,5 @@
 # Incomplete
-- [ ] Investigate weird rows in vehicleupdates that contain hardly any
-information ![img](vehicleupdates_missing_info.png)
+
 - [ ] Document the data
 - [ ] Verify what `IN_TRANSIT_TO` and `STOPPED_AT` mean
 - [ ] Find out how to generate tripupdate information using vehicleupdates
@@ -17,3 +16,8 @@ a correlation between the old and new stops?
 - [x] Find out what can be cut away from tripupdates
 - [x] Write a script/program that generates a .csv file from vehicleupdates
 - [x] Revert scripts to how they were before
+- [x] Investigate weird rows in vehicleupdates that contain hardly any
+information ![img](vehicleupdates_missing_info.png)
+    - It seems like some vehicle stop somewhere and do not get assigned routes
+    (maybe stopped for service, break, etc.). These vehicles will be ignored
+    ![img](vehicleupdates_missing_info_explained.png)

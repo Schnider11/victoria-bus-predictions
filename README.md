@@ -15,3 +15,17 @@
     - Display all tables of the currently connected DB `\dt`
     - Create a table using what's in `postgres/create_table.sql`
     - Load the csv file into the table using `\copy vehicle_data(trip_id,vehicle_id,start_time,start_date,schedule_relationship,route_id,direction_id,speed,current_stop_sequence,current_status,timestamp,congestion_level,stop_id) FROM '/var/lib/postgresql/data/vehicleupdates_2024-05-11.csv' DELIMITER ',' CSV HEADER;`
+
+# Vehicleupdates to CSV
+- Formats vehicleupdates as a CSV file, input options are:
+    - `file Y y X x` to read a single file and write it as a csv file where
+    `X` is the input directory, `x` is the file to be read, `Y` is the output
+    directory, and `y` is the output file name.
+    - `folder/dir Y y X` to read an entire directory `X` of 
+    vehicleupdate files and write them into a single file `y` in 
+    directory `Y`
+- Usage examples:
+    - `python file ./output_dir out_file.csv ./vehicleupdates/2024-05-11 vehicleupdates_1715488711.pb`
+    - `python folder ./output_dir out_file.csv ./vehicleupdates/2024-05-11`
+    - `python directory ./output_dir out_file.csv ./vehicleupdates/2024-05-11`
+

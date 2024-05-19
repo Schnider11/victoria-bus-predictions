@@ -4,6 +4,12 @@ import sys
 from google.transit import gtfs_realtime_pb2
 
 
+def write_file_header(out_file):
+    out_file.write("trip_id,vehicle_id,start_time,start_date," +
+        "schedule_relationship,route_id,direction_id,speed," +
+        "current_stop_sequence,current_status,timestamp," +
+        "congestion_level,stop_id\n")
+
 def write_entity_into_file(file, entity):
     file.write(str(entity.vehicle.trip.trip_id) + ","
         + str(entity.vehicle.vehicle.id) + ","
@@ -19,6 +25,16 @@ def write_entity_into_file(file, entity):
         + str(entity.vehicle.congestion_level) + ","
         + str(entity.vehicle.stop_id) + "\n")
 
+def write_pb_file(input_file, output_file):
+    feed = gtfs_realtime_pb2.FeedMessage()
+    response = open(input_file, "rb")
+    feed.ParseFromString(response.read())
+    for entity in feed.entity:
+        if entity.HasField("vehicle"):
+            if entity.vehicle.HasField("trip"):
+                # Vehicle is actually on the road
+                write_entity_into_file(out_file, entity)
+
 def write_vehicleupdates_as_csv(
     output_file_dir,
     output_file,
@@ -32,26 +48,13 @@ def write_vehicleupdates_as_csv(
         os.makedirs(output_file_dir)
 
     out_file = open(output_file_dir + output_file, "w")
-    out_file.write("trip_id,vehicle_id,start_time,start_date," +
-        "schedule_relationship,route_id,direction_id,speed," +
-        "current_stop_sequence,current_status,timestamp," +
-        "congestion_level,stop_id\n")
+    write_file_header(out_file)
 
     if input_file is not None:
-        feed = gtfs_realtime_pb2.FeedMessage()
-        response = open("{}/{}".format(input_file_dir, input_file), "rb")
-        feed.ParseFromString(response.read())
-        for entity in feed.entity:
-            if entity.HasField("vehicle"):
-                write_entity_into_file(out_file, entity)
+        write_pb_file("{}/{}".format(input_file_dir, input_file), out_file)
     else:
         for file in os.listdir(input_file_dir):
-            feed = gtfs_realtime_pb2.FeedMessage()
-            response = open("{}/{}".format(input_file_dir, file), "rb")
-            feed.ParseFromString(response.read())
-            for entity in feed.entity:
-                if entity.HasField("vehicle"):
-                    write_entity_into_file(out_file, entity)
+            write_pb_file("{}/{}".format(input_file_dir, file), out_file)
     out_file.close()
 
 def main():
