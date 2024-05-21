@@ -14,7 +14,10 @@
     - Conntect to a DB `\c <db_name>`
     - Display all tables of the currently connected DB `\dt`
     - Create a table using what's in `postgres/create_table.sql`
-    - Load the csv file into the table using `\copy vehicle_data(trip_id,vehicle_id,start_time,start_date,schedule_relationship,route_id,direction_id,speed,current_stop_sequence,current_status,timestamp,congestion_level,stop_id) FROM '/var/lib/postgresql/data/vehicleupdates_2024-05-11.csv' DELIMITER ',' CSV HEADER;`
+    - Due to duplicates in the CSV file, create a temp table that would
+    be used to load in the CSV file, and then load unique entries into the
+    actual table (check `scripts/postgres/remove_duplicates.sql`)
+    - Describe a table `\d <table name>` or `\d+ <table name>`
 
 # Vehicleupdates to CSV
 - Formats vehicleupdates as a CSV file, input options are:
@@ -29,3 +32,12 @@
     - `python folder ./output_dir out_file.csv ./vehicleupdates/2024-05-11`
     - `python directory ./output_dir out_file.csv ./vehicleupdates/2024-05-11`
 
+# Grading
+- 30% evaluation of the routes - a report on the goodness of the routes
+    1. Describe the goodness measures - usually how well the bus
+    is on track
+    2. Report how good the timetables are in regards to the developed
+    goodness measures and the actual times
+- 30% Data mining part and new timetables
+- 30% Final Report
+- 10% Presentation

@@ -1,7 +1,6 @@
 # Incomplete
 
 - [ ] Document the data
-- [ ] Verify what `IN_TRANSIT_TO` and `STOPPED_AT` mean
 - [ ] Find out how to generate tripupdate information using vehicleupdates
 and the static data. Probably some cross-correlation with the static data
 - [ ] Learn about timeserires
@@ -11,11 +10,20 @@ whether you can trace that relation from the data
 - [ ] Find out what happens to the order of the stops if there is construction,
 does the bus seem like it skipped a number of stops from the data or is there
 a correlation between the old and new stops?
+- [ ] Is there any alternatives to using `(trip_id, vehicle_id, timestamp)`
+as a composite primary key?
+    - `stop_id` won't work if the bus spent more than 30 seconds heading or
+    stopping at a single stop, which might happen at the start of the route
+- [ ] Should the status codes be saved in their own table rather than being
+just out there in the data?
+- [ ] Adjust questions in the `project_description.md` to be from the
+prespective of the user
 
 # Done
 - [x] Find out what can be cut away from tripupdates
 - [x] Write a script/program that generates a .csv file from vehicleupdates
 - [x] Revert scripts to how they were before
+- [x] Verify what `IN_TRANSIT_TO` and `STOPPED_AT` mean
 - [x] Investigate weird rows in vehicleupdates that contain hardly any
 information ![img](vehicleupdates_missing_info.png)
     - It seems like some vehicle stop somewhere and do not get assigned routes

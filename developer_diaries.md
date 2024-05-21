@@ -1,3 +1,19 @@
+# May 20
+
+## Decisions
+- Write one paragraph as the project description
+- Pose questions from the prespective of the user
+
+# May 19
+
+## Notes
+- ~~It seems like the trip_id somehow encodes the vehicle_id as well. By
+browsing through the data, trip_id uniquely identifies the
+`(vehicle_id, start_time, route_id, direction_id)`. Therefore,
+`(trip_id, timestamp)` can be used as a composite primary key~~. The trip_id
+does **not** encode the `vehicle_id` information, so it needs to be included
+as part of the composite primary key as `(trip_id, vehicle_id, timestamp)`
+
 # May 13
 
 ## Notes
