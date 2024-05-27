@@ -1,3 +1,15 @@
+# May 26
+
+## Notes
+- Stop sequences do not necessarily refer to the same stop at all times
+![img](images/bus7_stops.png)
+- `metadata/trips.txt` is somewhat redundant
+- `metadata/stop_times.txt` is the file we want, but it seems to get
+updated daily with new `trip_id`'s. Meaning, unless we do that daily, we
+cannot recover arrival/departure times without looking at `tripupdates`
+    - Need to somehow extract this information from tripupdates, maybe
+    from an early file so that arrival and departure times aren't altered
+
 # May 20
 
 ## Decisions

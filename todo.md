@@ -16,7 +16,17 @@ as a composite primary key?
     stopping at a single stop, which might happen at the start of the route
 - [ ] Should the status codes be saved in their own table rather than being
 just out there in the data?
-
+- [ ] Make a file similar to vehicleupdates_to_csv but for tripupdates
+    1. Make a txt version and understand why the sizes are different as
+    files seem to become larger and larger until ~10 AM, then they plateau
+    for a bit, then they decrease in size
+        > The decrease is understandable because tripupdates only contains
+        information from that point in the day until the end of the day, or
+        that's how it was assumed so far at least. However, the increase is
+        weird
+    2. After completing the first task, create a script that converts the
+    `pb` files into `csv` files - might only need a handful of tripupdates
+    files for an entire day to create a table for that day
 
 ## In Progress
 
