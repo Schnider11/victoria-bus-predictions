@@ -1,4 +1,4 @@
-# Incomplete
+## Researching
 
 - [ ] Document the data
 - [ ] Find out how to generate tripupdate information using vehicleupdates
@@ -16,16 +16,24 @@ as a composite primary key?
     stopping at a single stop, which might happen at the start of the route
 - [ ] Should the status codes be saved in their own table rather than being
 just out there in the data?
-- [ ] Adjust questions in the `project_description.md` to be from the
-prespective of the user
 
-# Done
+
+## In Progress
+
+
+## Done
+
 - [x] Find out what can be cut away from tripupdates
 - [x] Write a script/program that generates a .csv file from vehicleupdates
 - [x] Revert scripts to how they were before
 - [x] Verify what `IN_TRANSIT_TO` and `STOPPED_AT` mean
+    - > Added a proto_enums.py file that contains information taken
+    from the github page that describes what fields mean
 - [x] Investigate weird rows in vehicleupdates that contain hardly any
-information ![img](vehicleupdates_missing_info.png)
+information ![img](images/vehicleupdates_missing_info.png)
     - It seems like some vehicle stop somewhere and do not get assigned routes
     (maybe stopped for service, break, etc.). These vehicles will be ignored
-    ![img](vehicleupdates_missing_info_explained.png)
+    ![img](images/vehicleupdates_missing_info_explained.png)
+- [x] Adjust questions in the `project_description.md` to be from the
+prespective of the user
+- [x] Create tables for stops and try to join with vehicle_data
