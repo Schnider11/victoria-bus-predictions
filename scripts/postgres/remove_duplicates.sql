@@ -14,3 +14,7 @@ INSERT INTO vehicle_data
 SELECT DISTINCT ON (trip_id, vehicle_id, timestamp) *
 FROM tmp_table
 ORDER BY (timestamp);
+
+INSERT INTO trip_data
+SELECT DISTINCT ON (trip_id, stop_sequence, arrival_timestamp, departure_timestamp) *
+FROM tmp_table2;

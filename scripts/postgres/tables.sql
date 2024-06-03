@@ -17,6 +17,23 @@ CREATE TABLE IF NOT EXISTS vehicle_data (
     PRIMARY KEY(trip_id, vehicle_id, timestamp)
 );
 
+CREATE TABLE IF NOT EXISTS trip_data (
+    trip_id VARCHAR (50),
+    start_time TIME,
+    start_date DATE,
+    schedule_relationship VARCHAR (50),
+    route_id VARCHAR (10),
+    direction_id SMALLINT,
+    stop_sequence SMALLINT,
+    arrival_timestamp VARCHAR (20),
+    arrival_delay SMALLINT,
+    departure_timestamp VARCHAR (20),
+    departure_delay SMALLINT,
+    stop_id VARCHAR (10),
+    stop_schedule_relationship VARCHAR (50),
+    PRIMARY KEY(trip_id, stop_sequence, arrival_timestamp, departure_timestamp)
+);
+
 CREATE TABLE IF NOT EXISTS trips (
     route_id VARCHAR (10),
     service_id VARCHAR (50),
