@@ -12,9 +12,14 @@ def write_file_header(file):
         "congestion_level,stop_id\n")
 
 def write_entity_into_file(file, entity):
+    # Start time sometimes shows up with hours as 25 or 26, normalize
+    start_time = str(entity.vehicle.trip.start_time)
+    hours = int(start_time[:2]) % 24
+    start_time = "{:02d}".format(hours) + start_time[2:11]
+
     file.write(str(entity.vehicle.trip.trip_id) + ","
         + str(entity.vehicle.vehicle.id) + ","
-        + str(entity.vehicle.trip.start_time) + ","
+        + start_time + ","
         + str(entity.vehicle.trip.start_date) + ","
         + proto_enums.ScheduleRelationship[entity.vehicle.trip.schedule_relationship] + ","
         + str(entity.vehicle.trip.route_id) + ","
