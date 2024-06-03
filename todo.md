@@ -16,20 +16,26 @@ as a composite primary key?
     stopping at a single stop, which might happen at the start of the route
 - [ ] Should the status codes be saved in their own table rather than being
 just out there in the data?
+- [ ] Modify vehicleupdates parser script to also dump the longitude and
+latitude information so we can accurately determine the position of a bus
+- [ ] Research if there is a better way of representing timestamps in the
+SQL tables other than `VARCHAR`
+
+## In Progress
 - [ ] Make a file similar to vehicleupdates_to_csv but for tripupdates
-    1. Make a txt version and understand why the sizes are different as
-    files seem to become larger and larger until ~10 AM, then they plateau
-    for a bit, then they decrease in size
+    - [x] Make a text version 
+    - [ ] Understand why the sizes are different as files seem to become larger
+    and larger until ~10 AM, then they plateau for a bit, then they decrease
+    in size
         > The decrease is understandable because tripupdates only contains
         information from that point in the day until the end of the day, or
         that's how it was assumed so far at least. However, the increase is
         weird
-    2. After completing the first task, create a script that converts the
+    - [x] After completing the first task, create a script that converts the
     `pb` files into `csv` files - might only need a handful of tripupdates
     files for an entire day to create a table for that day
-
-## In Progress
-
+        - [ ] Some entries has arrival and departure times omitted from
+        the data for some reason. Wrote comments on how to remedy that
 
 ## Done
 
