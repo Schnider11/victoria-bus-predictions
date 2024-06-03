@@ -19,8 +19,8 @@
     actual table (check `scripts/postgres/remove_duplicates.sql`)
     - Describe a table `\d <table name>` or `\d+ <table name>`
 
-# Vehicleupdates to CSV
-- Formats vehicleupdates as a CSV file, input options are:
+# Vehicleupdates/Tripupdates to CSV
+- Formats the file as a CSV file, input options are:
     - `file Y y X x` to read a single file and write it as a csv file where
     `X` is the input directory, `x` is the file to be read, `Y` is the output
     directory, and `y` is the output file name.
@@ -31,6 +31,10 @@
     - `python file ./output_dir out_file.csv ./vehicleupdates/2024-05-11 vehicleupdates_1715488711.pb`
     - `python folder ./output_dir out_file.csv ./vehicleupdates/2024-05-11`
     - `python directory ./output_dir out_file.csv ./vehicleupdates/2024-05-11`
+
+# Getting Files from Server
+Use `wget --no-parent -r https://turingmachine.org/~dmg/temp/buses/20240514/`
+to get all the files in the `20240514` directory for example.
 
 # Grading
 - 30% evaluation of the routes - a report on the goodness of the routes
