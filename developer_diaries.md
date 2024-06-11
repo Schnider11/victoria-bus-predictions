@@ -1,3 +1,43 @@
+# June 9
+
+## Notes
+- Seems that stop times have no difference in between them
+    - Which doesn't quite line up with what we thought, which is weird...
+    - There's no abstraction, so how are the trips organized? Is it just
+    the same for every day? Then where does the abstraction comes from?
+- Almost at the time where we can start joining and writing the results to
+files. Only thing remaining is to figure out what to do when the bus is not
+currently stopped at the stop but in transit. Do we try to estimate based on
+long/lat coordinates... This requires further research.
+
+## Findings
+- Mon-Fri trips share similar trip_ids but are different from the Saturday
+trips and Sunday trips. This is not revealed in the stop_times static data,
+but can be seen from the tripupdates!
+- A trip_id uniquely determines a route, a direction, and a start time
+- Daniel was right, it seems that tripupdates data are windowed between
+8-hour intervals. Every trip that *starts* <= 8 hours after the fetch time
+is included
+![img](images/tripupdates_window1.png)
+![img](images/tripupdates_window2.png)
+![img](images/tripupdates_window3.png)
+- Early morning tripupdates may contain information from the previous day
+- There's no 00 for hours in the data, it is 24 instead. This is annoying
+because it means the previous day contains information about the trips
+in the first hour of the next day
+    - However, this might not be an issue if we only consider busses that
+    operate between say 6 AM - 9 PM
+
+# June 3
+
+## Notes
+- Maybe use `csvtool` from Linux to see the difference between the
+tripupdate files
+    - Do set union and difference to figure out what's different between
+- Make two diagrams, one of the original data and one of the dumped data
+- Since we already have pictures of the bus stops, check if the two
+data are consistent
+
 # June 2
 
 ## Notes
