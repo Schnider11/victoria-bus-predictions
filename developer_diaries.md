@@ -27,6 +27,8 @@ because it means the previous day contains information about the trips
 in the first hour of the next day
     - However, this might not be an issue if we only consider busses that
     operate between say 6 AM - 9 PM
+    - Note that, contrary to previous belief, they actually go up until
+    27 hours, which is the end of the day at 3 AM
 
 # June 3
 
