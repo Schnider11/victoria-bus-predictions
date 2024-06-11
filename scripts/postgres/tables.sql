@@ -9,12 +9,14 @@ CREATE TABLE IF NOT EXISTS vehicle_data (
     route_id VARCHAR (10),
     direction_id SMALLINT,
     speed REAL,
+    latitude REAL,
+    longitude REAL,
     current_stop_sequence SMALLINT,
     current_status VARCHAR (30),
     timestamp VARCHAR (20),
     congestion_level VARCHAR (30),
     stop_id VARCHAR (10),
-    PRIMARY KEY(trip_id, vehicle_id, timestamp)
+    PRIMARY KEY(trip_id, start_date, current_stop_sequence)
 );
 
 CREATE TABLE IF NOT EXISTS trip_data (
@@ -48,9 +50,8 @@ CREATE TABLE IF NOT EXISTS trips (
 CREATE TABLE IF NOT EXISTS stops (
     stop_id VARCHAR (10) PRIMARY KEY,
     stop_name VARCHAR (100),
-    stop_lat REAL,
-    stop_lon REAL,
-    wheelchair_boarding SMALLINT,
+    stop_latitude REAL,
+    stop_longitude REAL,
     stop_code VARCHAR (10)
 );
 
