@@ -3,6 +3,7 @@ import sys
 
 import proto_enums
 from google.transit import gtfs_realtime_pb2
+from time_manipulation import normalize_time
 
 
 def write_file_header(file):
@@ -13,18 +14,21 @@ def write_file_header(file):
 
 def write_entity_into_file(file, entity):
     # Start time sometimes shows up with hours as 25 or 26, normalize
-    start_time = str(entity.vehicle.trip.start_time)
-    hours = int(start_time[:2]) % 24
-    start_time = "{:02d}".format(hours) + start_time[2:11]
-
+    start_time, start_date = normalize_time(
+        str(entity.vehicle.trip.start_time), 
+        str(entity.vehicle.trip.start_date)
+    )
+    
     file.write(str(entity.vehicle.trip.trip_id) + ","
         + str(entity.vehicle.vehicle.id) + ","
         + start_time + ","
-        + str(entity.vehicle.trip.start_date) + ","
+        + start_date + ","
         + proto_enums.ScheduleRelationship[entity.vehicle.trip.schedule_relationship] + ","
         + str(entity.vehicle.trip.route_id) + ","
         + str(entity.vehicle.trip.direction_id) + ","
         + str(entity.vehicle.position.speed) + ","
+        + str(entity.vehicle.position.latitude) + ","
+        + str(entity.vehicle.position.longitude) + ","
         + str(entity.vehicle.current_stop_sequence) + ","
         + proto_enums.VehicleStopStatus[entity.vehicle.current_status] + ","
         + str(entity.vehicle.timestamp) + ","
@@ -81,10 +85,7 @@ def main():
         + "vehicleupdate files and write them into a single file `y` in "
         + "directory `Y`")
 
-    if "file" in args[0]:
-        write_vehicleupdates_as_csv(*args[1:])
-    else:
-        write_vehicleupdates_as_csv(*args[1:])
+    write_vehicleupdates_as_csv(*args[1:])
 
 if __name__ == "__main__":
     main()
