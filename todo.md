@@ -29,6 +29,7 @@ obtained from
 stops
 - [ ] Some tripupdates data have trips that have no stop time updates, why
 is this the case? Investigate
+- [ ] Divide the expected timetable file further into theoretical (name under consideration) and in progress trips. In progress trips are ones whose first stop time update stop sequence is not 1. This will allow us to view the updates made to the trips and maybe observe the pattern in a clean environment.
 
 ## In Progress
 - [ ] Is there any alternatives to using `(trip_id, vehicle_id, timestamp)`
