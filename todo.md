@@ -29,7 +29,34 @@ obtained from
 stops
 - [ ] Some tripupdates data have trips that have no stop time updates, why
 is this the case? Investigate
-- [ ] Divide the expected timetable file further into theoretical (name under consideration) and in progress trips. In progress trips are ones whose first stop time update stop sequence is not 1. This will allow us to view the updates made to the trips and maybe observe the pattern in a clean environment.
+- [ ] Think about how to construct a metric to measure the goodness of a
+route. Just consider the last estimation of a trip because that's the closest
+to reality
+    - Is it better to plan the day before for a trip or two hours in advance?
+    How much variablility is there?
+    - Also maybe do one for the real data. Daniel thinks that there might not
+    be much variability between the real data and the last expected trip but
+    might be interesting to compare the two
+    - Compute a vector with different metrics of statistics from the data
+    and plot them to see which of the statistical values have the best
+    estimation and give us the best value. For example:
+        - Just the difference between the abs(a start time - e start time) + abs(a end time - e end time)
+        - The sum of the deltas of the difference between the stops
+        - Maybe consider the median delay value
+        - The mean of the delays across all stops for a trip
+    - The more late the bus is, the more annoying it is. But maybe it's more
+    of a exponential grows between how late vs how annoyed people are
+    - Think like a user of the bus system, what are the things you'd be concerned about?
+        - How late/early?
+        - Is the bus sticking to the timetable or is it running behind on some stops?
+    - Maybe there are a number of metrics that none of them are good
+- [ ] Look into how the delays are calculated? Can we get a rough estimate by
+looking at all the expected trips for a trip and see how the delay numbers
+are changing?
+- [ ] Divide the expected timetable file further into theoretical (name under
+consideration) and in progress trips. In progress trips are ones whose first
+stop time update stop sequence is not 1. This will allow us to view the
+updates made to the trips and maybe observe the pattern in a clean environment
 
 ## In Progress
 - [ ] Is there any alternatives to using `(trip_id, vehicle_id, timestamp)`
