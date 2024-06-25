@@ -27,8 +27,17 @@ obtained from
     other manipulation
 - [ ] Trips should be converted to be the delta between two subsequent
 stops
+- [ ] Is there any alternatives to using `(trip_id, vehicle_id, timestamp)`
+as a composite primary key?
+    - `stop_id` won't work if the bus spent more than 30 seconds heading or
+    stopping at a single stop, which might happen at the start of the route
 - [ ] Some tripupdates data have trips that have no stop time updates, why
 is this the case? Investigate
+- [ ] Look into how the delays are calculated? Can we get a rough estimate by
+looking at all the expected trips for a trip and see how the delay numbers
+are changing?
+
+## In Progress
 - [ ] Think about how to construct a metric to measure the goodness of a
 route. Just consider the last estimation of a trip because that's the closest
 to reality
@@ -48,21 +57,11 @@ to reality
     of a exponential grows between how late vs how annoyed people are
     - Think like a user of the bus system, what are the things you'd be concerned about?
         - How late/early?
+            - I'd say if the bus was > 2 minutes early, it's equally as bad
+            as being 10-15 minutes late since, either way, you're most likely
+            going to get on a bus on the next scheduled time
         - Is the bus sticking to the timetable or is it running behind on some stops?
     - Maybe there are a number of metrics that none of them are good
-- [ ] Look into how the delays are calculated? Can we get a rough estimate by
-looking at all the expected trips for a trip and see how the delay numbers
-are changing?
-- [ ] Divide the expected timetable file further into theoretical (name under
-consideration) and in progress trips. In progress trips are ones whose first
-stop time update stop sequence is not 1. This will allow us to view the
-updates made to the trips and maybe observe the pattern in a clean environment
-
-## In Progress
-- [ ] Is there any alternatives to using `(trip_id, vehicle_id, timestamp)`
-as a composite primary key?
-    - `stop_id` won't work if the bus spent more than 30 seconds heading or
-    stopping at a single stop, which might happen at the start of the route
 
 ## Done
 
@@ -112,3 +111,16 @@ timetables, and there will be many version of a trip in the expected
 timetables. What's interesting will be to see how well BC transit predicts
 delays as time gets closer to the actual trip time
 - [x] Document the dumping of the data and how it links to the original
+- [x] Divide the expected timetable file further into `actual_expected` and
+`in_motion` trips. In progress trips are ones whose first stop time update
+stop sequence is not 1. This will allow us to view the updates made to the
+trips and maybe observe the pattern in a clean environment
+    - Could we maybe also add a `last_expected` file that can be used to
+    provide the most up to date trip informaion and use that to compare against
+    the expected one? That would require saving all the trips in a dict and
+    comparing every time we come across a trip we've seen before. If it still
+    has the first stop in the sequence of stops, then replace the previous
+    iteration
+        - If so, could make a combination of a
+        [`dataclass`](https://docs.python.org/3/library/dataclasses.html)
+        object and a dict to keep track of which is the latest expected trip
