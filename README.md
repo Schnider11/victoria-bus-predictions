@@ -1,4 +1,3 @@
-
 # Postgres Setup
 - Change directory to `scripts`
 - Run `docker compose up` to run the container in the foreground or
@@ -35,6 +34,17 @@
 # Getting Files from Server
 Use `wget --no-parent -r https://turingmachine.org/~dmg/temp/buses/20240514/`
 to get all the files in the `20240514` directory for example.
+
+# Data Documentation
+- The metadata folders are timed according to GMT not local!! So dates
+are not exactly correct
+
+# Sorting CSV Files
+- Using the `sort` Linux command, a CSV file can be sorted according to
+certain criteria. For example, to sort a CSV file with commas as separators
+according to the first column then the second one and write to `output.csv`,
+the following command can be used
+`sort -t ',' -k 1,1 -k 2,2 -u -n input.csv -o output.csv`
 
 # Grading
 - 30% evaluation of the routes - a report on the goodness of the routes

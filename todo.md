@@ -38,6 +38,33 @@ looking at all the expected trips for a trip and see how the delay numbers
 are changing?
 
 ## In Progress
+- [ ] Find a way to interpolate the real data into the actual trips
+    - Find out how much one second is in distance in Victoria
+        - Either calculate it based on the route or do a rough estimation
+    - How long did a bus stop at any given stop? Is it safe to assume that
+    it stopped only if we captured it or should we apply some +5 seconds per
+    stop?
+    - Converting polar coordinates into geographical coordinates is trivial
+    - Daniel believes that the average speed might not be an accurate
+    representation of the actual speed of a route because there are many
+    stops and slow-downs that might cause the average speed to look
+    smaller than it actually is
+    - We need to determine a metric of Distance (Eucledian, Manhaten, etc.)
+        - Look up K-means
+        - Distance between two trips
+        - If the distance metric is good, then the following is true:
+        Distance is always positive when you're comparing two consecutive
+        trips and it follows the triangular inequality
+        - If the distance between the actual trip and the expected trips
+        becomes smaller the closer it is to the actual trip date, then
+        they might be doing some prediction behind the scenes. We don't
+        know that
+    - Define how to compare the days based on their trips
+        - Aggregation is not trivial, think about and define it well
+        - For example, we shouldn't be comparing average delays because
+        maybe longer trips will have longer delays and one of the days in
+        which we compare has more long trips than the other day
+            - Maybe compare on a route-by-route basis?
 - [ ] Think about how to construct a metric to measure the goodness of a
 route. Just consider the last estimation of a trip because that's the closest
 to reality

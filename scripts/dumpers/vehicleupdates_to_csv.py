@@ -9,8 +9,8 @@ from time_manipulation import normalize_time
 def write_file_header(file):
     file.write("trip_id,vehicle_id,start_time,start_date," +
         "schedule_relationship,route_id,direction_id,speed," +
-        "current_stop_sequence,current_status,timestamp," +
-        "congestion_level,stop_id\n")
+        "longitude,latitude,current_stop_sequence,current_status," +
+        "timestamp,congestion_level,stop_id\n")
 
 def write_entity_into_file(file, entity):
     # Start time sometimes shows up with hours as 25 or 26, normalize

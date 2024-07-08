@@ -1,3 +1,39 @@
+# July 7
+
+## Notes
+- What's left of the interpolation script is to adjust the timedeltas
+to have adjusted deltas for stops that share the same minute based on
+how many do. For example, if 2 then 30 seconds each; if 3 then 20 seconds,
+etc.
+
+# June 30
+
+## Notes
+- Use `sort -t ',' -k 4,4 -k 3,3 -k 6,6h -k 7,7 -k 11,11n -k 13,13n <file> -o <file>`
+to sort a vehicleupdates file seems to work well, except it places the header
+at the bottom
+    - Use `sort -t ',' -k 3,3 -k 2,2 -k 4,4h -k 5,5 -k 6,6n <file> -o <file>`
+    to sort an abstract trips file
+
+# June 23
+
+## Updates
+- Done with the timetable_builder and expected_trip_splitter files
+- It seems that there are some trips that appear in the abstract trips that do
+not appear in the expected ones for some reason. My best guess is that they
+were cancelled but currently there's no evidence to support that
+    - Maybe update the processing script to also add a file for cancelled
+    trips? Anything but SCHEDULED could go there...
+
+# June 16
+
+## Updates
+- Contacted BC Transit about getting information about their ridership numbers,
+they responded that it might be possible but I need to write a freedom of
+information request to them outlining what the data will be used for. They
+do not explicitly mention what data they can provide, but we can definitely
+try (especially since Levi didn't respond to the connection request)
+
 # June 9
 
 ## Notes

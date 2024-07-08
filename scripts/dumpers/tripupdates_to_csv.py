@@ -1,8 +1,10 @@
 import os
 import sys
+from datetime import datetime
 
 import proto_enums
 from google.transit import gtfs_realtime_pb2
+from time_manipulation import *
 
 
 def write_file_header(file):
@@ -12,25 +14,31 @@ def write_file_header(file):
         "departure_delay,stop_id,stop_schedule_relationship\n")
 
 def write_entity_into_file(file, entity):
-    for ss in entity.trip_update.stop_time_update:
-        # If arrival.time or departure.time are undefined, which can be
-        # checked using not ss.HasField("arrival") for example, then if
-        # it is the first stop, set it to be the same time as the start
-        # time but convert it to a timestamp. Do the same for the departure
-        # on the first stop.
+    start_time, start_date = normalize_time(
+        str(entity.trip_update.trip.start_time), 
+        str(entity.trip_update.trip.start_date)
+    )
 
-        # If the departure time of the last stop is 0, is that a problem?
-        # Methinks not
+    for ss in entity.trip_update.stop_time_update:
+        try:
+            arrival_time, departure_time = fix_stop_times_on_first_stop(
+                entity.trip_update.trip.trip_id, ss, start_time, start_date
+            )
+        except ValueError:
+            raise ValueError(
+                "Data for {} is corrupted".format(str(entity))
+            )
+
         file.write(str(entity.trip_update.trip.trip_id) + ","
-            + str(entity.trip_update.trip.start_time) + ","
-            + str(entity.trip_update.trip.start_date) + ","
+            + start_time + ","
+            + start_date + ","
             + proto_enums.ScheduleRelationship[entity.trip_update.trip.schedule_relationship] + ","
             + str(entity.trip_update.trip.route_id) + ","
             + str(entity.trip_update.trip.direction_id) + ","
             + str(ss.stop_sequence) + ","
-            + str(ss.arrival.time) + ","
+            + str(arrival_time) + ","
             + str(ss.arrival.delay) + ","
-            + str(ss.departure.time) + ","
+            + str(departure_time) + ","
             + str(ss.departure.delay) + ","
             + str(ss.stop_id) + ","
             + proto_enums.ScheduleRelationship[ss.schedule_relationship] + "\n"
@@ -84,10 +92,7 @@ def main():
         + "tripupdate files and write them into a single file `y` in "
         + "directory `Y`")
 
-    if "file" in args[0]:
-        write_tripupdates_as_csv(*args[1:])
-    else:
-        write_tripupdates_as_csv(*args[1:])
+    write_tripupdates_as_csv(*args[1:])
 
 if __name__ == "__main__":
     main()
