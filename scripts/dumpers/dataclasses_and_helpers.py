@@ -8,13 +8,13 @@ class Vector:
     x: np.float32
     y: np.float32
 
-    def dot(self, other: Vector) -> np.float32:
+    def dot(self, other: "Vector") -> np.float32:
         return self.x * other.x + self.y * other.y
     
     def length(self) -> np.float32:
         return math.sqrt(self.dot(self))
 
-    def proj(self, other: Vector) -> Vector:
+    def proj(self, other: "Vector") -> "Vector":
         # Projection of `self` onto `other`
         other_squared = pow(other.length(), 2)
         return Vector(
@@ -27,14 +27,14 @@ class Point:
     x: np.float32
     y: np.float32
 
-    def __add__(self, other: Point) -> Point:
+    def __add__(self, other: "Point") -> "Point":
         return Point(self.x + other.x, self.y + other.y)
 
-    def __sub__(self, other: Point) -> Point:
+    def __sub__(self, other: "Point") -> "Point":
         # Also is distance from self to other
         return Point(other.x - self.x, other.y - self.y)
 
-    def distance(self, other: Point) -> np.int16:
+    def distance(self, other: "Point") -> np.float32:
         return math.sqrt(
             pow(other.x - self.x, 2) + pow(other.y - self.y, 2)
         )
@@ -84,7 +84,7 @@ class AbstractTrip:
     start_date: str
     route_id: str
     direction_id: int
-    stops: list[Stop]
+    stops: list[AbstractStop]
 
     def __eq__(self, other) -> bool:
         return self.trip_id == other.trip_id \
@@ -110,7 +110,7 @@ class AbstractTrip:
         return csv_str
 
 def create_base_abstract_trip(df_row):
-    return TripUpdate(
+    return AbstractTrip(
         df_row.trip_id,
         df_row.start_time,
         df_row.start_date,
@@ -124,7 +124,7 @@ def process_abstract_trip(df_slice):
 
     for row in df_slice.itertuples(index=False):
         if t is None:
-            t = create_base_trip(row)
+            t = create_base_abstract_trip(row)
 
         t.stops.append(
             AbstractStop(
@@ -245,7 +245,7 @@ class VehicleUpdates:
     start_time: str
     start_date: str
     route_id: str
-    direction_id: int
+    direction_id: np.int8
     updates: list[VehicleUpdate]
 
 def create_base_vehicle_updates(df_row):
@@ -255,7 +255,7 @@ def create_base_vehicle_updates(df_row):
         df_row.start_time,
         df_row.start_date,
         df_row.route_id,
-        df_row.direction_id,
+        np.int8(df_row.direction_id),
         []
     )
 
@@ -270,10 +270,10 @@ def process_vehicle_updates(df_slice):
         t.updates.append(
             VehicleUpdate(
                 row.speed,
-                GCS(lat=row.latitude, lon=row.longiutde),
-                row.current_stop_sequence,
+                GCS(lat=row.latitude, lon=row.longitude),
+                np.int8(row.current_stop_sequence),
                 row.current_status,
-                row.timestamp,
+                np.int64(row.timestamp),
                 row.congestion_level,
                 row.stop_id
             )
@@ -342,7 +342,7 @@ class ActualTrip:
     start_time: str
     start_date: str
     route_id: str
-    direction_id: int
+    direction_id: np.int8
     stops: list[InterpolatedStop]
     
     def to_csv(self) -> str:
@@ -355,7 +355,7 @@ class ActualTrip:
                     self.start_time,
                     self.start_date,
                     self.route_id,
-                    self.direction_id,
+                    str(self.direction_id),
                     s.to_csv()
                 ]
             ) + "\n"
