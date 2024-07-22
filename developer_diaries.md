@@ -1,3 +1,16 @@
+# July 21
+
+## Notes
+- The interpolation by design will give arrival delays a lower value than
+departure delays for the sake of consistency, so comparing the two together
+might not give the clearest indication of delays. What needs to be done is most
+likely an average/combination of the two delay numbers.
+    - Doing a quick scan through, it seems the number are pretty nice and
+      consistent! Nothing jumping out
+- There's a problem where interpolating the first stop will cause a
+  divide-by-zero error. Seems because routes are circular so the last stop of
+  the previous trip is also the first stop of the next trip which causes
+  path_len to be 0.
 
 # July 15
 
