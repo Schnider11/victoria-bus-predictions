@@ -34,15 +34,17 @@ def convert_and_assign_to_timedeltas(t: AbstractTrip):
     count = 1
 
     for i in range(t.len() - 1):
-        if t.stops[i].timestamp == t.stops[i + 1].timestamp and i < t.len() - 2:
+        if t.stops[i].timestamp == t.stops[i + 1].timestamp:
             count += 1
-        else:
-            for j in range(count):
-                if j < count - 1:
-                    timedeltas.append((60 // count, j))
-                elif j == count - 1:
-                    timedeltas.append((t.stops[i + 1].timestamp - (t.stops[i].timestamp + 60 * (count - 1) // count), j))
-            count = 1
+            if i < t.len() - 2:
+                continue
+
+        for j in range(count):
+            if j < count - 1:
+                timedeltas.append((60 // count, j))
+            elif j == count - 1:
+                timedeltas.append((t.stops[i + 1].timestamp - (t.stops[i].timestamp + 60 * (count - 1) // count), j))
+        count = 1
 
     # for j in range(count):
     #     if j == 0:
@@ -129,6 +131,7 @@ def get_subminute_timedelta(
                 return td
         except:
             print(trip_id, stop_sequence, trip_timedeltas[trip_id])
+            return 0
 
         td += trip_timedeltas[trip_id][stop_sequence][0]
         stop_sequence -= 1
