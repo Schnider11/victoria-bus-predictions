@@ -319,8 +319,20 @@ def create_base_interpolated_stop(stop_sequence: np.int8, stop_id: str):
     return InterpolatedStop(
         stop_sequence,
         np.inf,
+        0,
         np.inf,
+        0,
         stop_id
+    )
+
+def create_interpolated_from_vehicleupdate(vu: VehicleUpdate):
+    return InterpolatedStop(
+        vu.current_stop_sequence,
+        vu.timestamp,
+        0,
+        vu.timestamp,
+        0,
+        vu.stop_id
     )
 
 @dataclass
@@ -367,10 +379,12 @@ def process_actual_trip(
 ):
     for stop in interpolated_stops:
         at.stops.append(
-            InterpolatedStops(
+            InterpolatedStop(
                 np.int8(stop.stop_sequence),
                 np.int64(stop.arrival_timestamp),
+                np.int64(stop.arrival_delay),
                 np.int64(stop.departure_timestamp),
+                np.int64(stop.departure_delay),
                 stop.stop_id
             )
         )
