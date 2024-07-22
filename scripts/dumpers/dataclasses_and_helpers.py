@@ -1,3 +1,4 @@
+import math
 from dataclasses import dataclass
 
 import numpy as np
@@ -48,12 +49,12 @@ class GCS:
         R = 6367 # Earth's radius in KM
 
         # Longitude and latitude are given in degrees, convert to radians
-        self.lat = self.lat * np.pi / 180
-        self.lon = self.lon * np.pi / 180
+        lat = self.lat * np.pi / 180
+        lon = self.lon * np.pi / 180
 
         return Point(
-            R * np.cos(self.lat) * np.cos(self.lon),
-            R * np.cos(self.lat) * np.sin(self.lon)
+            R * np.cos(lat) * np.cos(lon),
+            R * np.cos(lat) * np.sin(lon)
         )
 
 @dataclass
@@ -66,6 +67,10 @@ class AbstractStop:
     def __eq__(self, other) -> bool:
         return self.stop_sequence == other.stop_sequence \
             and self.stop_id == other.stop_id
+
+    @property
+    def timestamp(self) -> np.int64:
+        return max(self.arrival_timestamp, self.departure_timestamp)
 
     def to_csv(self) -> str:
         return ",".join(
