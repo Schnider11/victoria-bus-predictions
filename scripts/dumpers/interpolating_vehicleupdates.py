@@ -81,15 +81,15 @@ def interpolate_in_motion(trip_id: str, vu: VehicleUpdate):
         print(t.stops[vu.current_stop_sequence - 2].stop_id, t.stops[vu.current_stop_sequence - 1].stop_id)
         print(stops[t.stops[vu.current_stop_sequence - 2].stop_id].to_point(), stops[t.stops[vu.current_stop_sequence - 1].stop_id].to_point())
         print(vu.pos, stops[t.stops[vu.current_stop_sequence - 2].stop_id], stops[t.stops[vu.current_stop_sequence - 1].stop_id])
-        raise ZeroDivisionError
+        return None, None
 
-    if trip_id == "10093896:5676830:5690445" and vu.current_stop_sequence == 14:
-        print("interpolate_in_motion")
-        print(path_len, p, p.distance(s1), p.distance(s2))
-        print(sec, dist_back, dist_forw, path_len, s1, s2)
-        # print(t.stops[vu.current_stop_sequence - 2].stop_id, t.stops[vu.current_stop_sequence - 1].stop_id)
-        # print(stops[t.stops[vu.current_stop_sequence - 2].stop_id], stops[t.stops[vu.current_stop_sequence - 1].stop_id])
-        # print(stops[t.stops[vu.current_stop_sequence - 2].stop_id].to_point(), stops[t.stops[vu.current_stop_sequence - 1].stop_id].to_point())
+    # if trip_id == "10093896:5676830:5690445" and vu.current_stop_sequence == 14:
+    #     print("interpolate_in_motion")
+    #     print(path_len, p, p.distance(s1), p.distance(s2))
+    #     print(sec, dist_back, dist_forw, path_len, s1, s2)
+    #     print(t.stops[vu.current_stop_sequence - 2].stop_id, t.stops[vu.current_stop_sequence - 1].stop_id)
+    #     print(stops[t.stops[vu.current_stop_sequence - 2].stop_id], stops[t.stops[vu.current_stop_sequence - 1].stop_id])
+    #     print(stops[t.stops[vu.current_stop_sequence - 2].stop_id].to_point(), stops[t.stops[vu.current_stop_sequence - 1].stop_id].to_point())
     
     if p.distance(s1) > path_len or p.distance(s2) > path_len:
         # The shortest distance line is behind the first stop or after the
