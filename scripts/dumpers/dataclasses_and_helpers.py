@@ -286,38 +286,31 @@ def process_vehicle_updates(df_slice):
 class InterpolatedStop:
     stop_sequence: np.int8
     arrival_timestamp: np.int64
+    arrival_delay: np.int64
     departure_timestamp: np.int64
+    departure_delay: np.int64
     stop_id: str
-
-    def __init__(
-        self,
-        stop_sequence: np.int8,
-        timestamp: np.int64,
-        stop_id: str
-    ):
-        self.stop_sequence = stop_sequence
-        self.arrival_timestamp = timestamp
-        self.departure_timestamp = timestamp
-        self.stop_id = stop_id
 
     # Automatically reject sets that would not make sense where
     # the arrival time is after the departure time and vice-versa
-    def __setattr__(self, prop, val):
-        if prop == "arrival_timestamp":
-            if val <= self.departure_timestamp:
-                super().__setattr__(prop, val)
-        elif prop == "departure_timestamp":
-            if val >= self.arrival_timestamp:
-                super().__setattr__(prop, val)
-        else:
-            super().__setattr__(prop, val)
+    # def __setattr__(self, prop, val):
+    #     if prop == "arrival_timestamp":
+    #         if val <= self.departure_timestamp:
+    #             super().__setattr__(prop, val)
+    #     elif prop == "departure_timestamp":
+    #         if val >= self.arrival_timestamp:
+    #             super().__setattr__(prop, val)
+    #     else:
+    #         super().__setattr__(prop, val)
     
     def to_csv(self) -> str:
         return ",".join(
             [
                 str(self.stop_sequence),
                 str(self.arrival_timestamp),
+                str(self.arrival_delay),
                 str(self.departure_timestamp),
+                str(self.departure_delay),
                 self.stop_id
             ]
         )
