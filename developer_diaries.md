@@ -1,4 +1,26 @@
-# July 21
+# Developer Diaries
+
+## July 27
+
+### Notes
+
+- The numbers look consistent between different stops but not between the
+  arrival and departure delays in every stop. When looking at the arrival or
+  departure delays for a few stops, they both have a reasonable fluctuation
+  akin to an actual trip
+- One unfortunate thing is that the stops seem to get updated over time, so it
+  might mean that some of our data cannot be worked with well because it
+  contain stop IDs that do not exist
+
+## July 22
+
+- Giving things names, that's the first step of modeling
+  - Once you have that, you can communicate with others
+- Start writing the paper
+- Try the bus 7 from yesterday
+- Write down a bus
+
+## July 21
 
 ## Notes
 - The interpolation by design will give arrival delays a lower value than
