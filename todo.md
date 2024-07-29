@@ -60,7 +60,32 @@ changing?
         - For example, we shouldn't be comparing average delays because maybe
           longer trips will have longer delays and one of the days in which we
           compare has more long trips than the other day
-            - Maybe compare on a route-by-route basis?
+      - Maybe compare on a route-by-route basis?
+- [ ] Adjust the trips dumping script so it only dumps in a reasonable way
+  where there isn't much repetition. For example, currently the script follows
+  the original data well because every line contains the trip id, vehicle id,
+  etc. However, much of that repetition can be reduced by having all stops that
+  belong to a certain trip on one line so it's like a list of stops
+- [ ] Figure out a way to compare the actual data recorded while out on the bus
+  to the interpolated trips. Maybe convert the real ones into a similar format
+  and just compare?
+- [ ] Find out if the timestamps in trip data correspond to both a timedelta
+  between two consecutive stops and an approximate wait time for one of the
+  stops, or if it only considers timedelta.
+  
+  Let $s_1, s_2, s_3$ be three consecutive stops. Let $t_1, t_3, t_5$ be
+  timestamps that represent arrival times at stops, and let $t_2, t_4, t_6$ be
+  timestamps that represent departure times at stops. Let $T_1, T_2, T_3$ be
+  the timestamps from the trip timetables. The trip timetables do not
+  distinguish between arrival and departure times despite having a timestamp
+  for each. Let $\Delta_{12} = T_2 - T_1, \Delta_{23} = T_3 - T_2$.
+  
+  ![img](./images/timedelta_question.png)
+  
+  Then, which of the following is true:
+  $$\Delta_{12} \stackrel{?}{=} t_3 - t_1, \Delta_{12} \stackrel{?}{=} t_4 -
+  t_1, \Delta_{12} \stackrel{?}{=} t_4 - t_2$$
+
 
 ## Done
 
