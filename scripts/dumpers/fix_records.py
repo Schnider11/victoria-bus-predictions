@@ -27,6 +27,8 @@ def get_file_name(date, rec_type):
 def fix_records(path, rec_type):
     date = path.split("/")[-1].split(".")[0].split("_")[1]
     date = datetime.datetime.strptime(date, "%Y-%m-%d")
+
+    path = "/".join(path.split("/")[:-1])
     # The way this works is that based on the difference in the
     # day, that will be the index. If the day is one smaller, then
     # the index will be -1 and will hit the last element of the
@@ -40,7 +42,7 @@ def fix_records(path, rec_type):
         open(path + "/" + get_file_name(date - d, rec_type), "a")
     ]
 
-    orig_file = open(path + "/" + get_file_name(i, rec_type), "r")
+    orig_file = open(path + "/" + get_file_name(date, rec_type), "r")
     for record in orig_file:
         s_record = record.split(",")
         if s_record[0] == "trip_id": # The header
@@ -48,19 +50,22 @@ def fix_records(path, rec_type):
             continue
 
         if rec_type == "trips":
-            d = int((s_record[2])[-2:])
-            if d - i == 0:
-                files[d - i].write(record)
+            d = datetime.datetime.strptime(s_record[2], "%Y%m%d")
+            diff = (d - date).days
+            if diff == 0:
+                files[diff].write(record)
         elif rec_type == "vehicle":
-            d = int((s_record[3])[-2:])
-            files[d - i].write(record)
+            d = datetime.datetime.strptime(s_record[3], "%Y%m%d")
+            diff = (d - date).days
+            if diff == 0:
+                files[diff].write(record)
 
     for f in [*files, orig_file]:
         f.close()
 
     os.rename(
-        path + "/" + get_new_file_name(i, rec_type),
-        path + "/" + get_file_name(i, rec_type)
+        path + "/" + get_new_file_name(date, rec_type),
+        path + "/" + get_file_name(date, rec_type)
     )
 
 def main():
