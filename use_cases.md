@@ -27,7 +27,7 @@
 # Use cases
 
 ## Comparing actual vs abstract
->
+
 > Does route 7 stick well to its schedule? How long should I expect to wait to
 > get a bus if I am following the schedule?
 
@@ -40,14 +40,14 @@
 - This would be a specific instance of a trip at a specific time
 
 ### Same day
->
+
 > Does route 7 run better in the morning or in the afternoon?
 
 - Communicates how well trips run at different times of the day, and whether or
 not they are effected by traffic
 
 ### Different day (same group), same time
->
+
 > Does route 7 run better on Mondays than Tuesdays?
 
 - Should only compare trips that are weekday trips or weekend trips
@@ -67,9 +67,8 @@ not they are effected by traffic
       timeschedule
 
 ### Which one does better in general/sticks
->
-> How does route 4 run in comparison to route 7?
 
+> How does route 4 run in comparison to route 7?
 > If I had two busses that get me to my destination and I am short on time,
 > which one should I pick?
 
@@ -83,7 +82,7 @@ not they are effected by traffic
 - Shows how good a route is compared to other routes
 
 ## Comparing weekend trips vs weekday trips
->
+
 > Does route 7 busses run better on weekends or not?
 
 - Trips must be condensed first
