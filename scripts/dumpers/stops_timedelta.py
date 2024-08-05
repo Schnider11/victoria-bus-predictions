@@ -124,16 +124,13 @@ def get_subminute_timedelta(
         # resulting in something like [(20, 0), (20, 1), (20, 2), (20, 0),
         # *(20, 1)*, (20, 2)], which won't allow us to know that by just
         # looking at the timedeltas
-        try:
-            if trip_timedeltas[trip_id][stop_sequence][0] >= 60:
-                return td
-            elif trip_timedeltas[trip_id][stop_sequence][1] > trip_timedeltas[trip_id][stop_sequence + 1][1]:
-                return td
-        except:
-            print(trip_id, stop_sequence, trip_timedeltas[trip_id])
-            return 0
+        if trip_timedeltas[trip_id][stop_sequence][0] >= 60:
+            return td
+        elif stop_sequence + 1 >= len(trip_timedeltas[trip_id]) or \
+            trip_timedeltas[trip_id][stop_sequence][1] > trip_timedeltas[trip_id][stop_sequence + 1][1]:
+            return td
 
         td += trip_timedeltas[trip_id][stop_sequence][0]
         stop_sequence -= 1
-    
+
     return td
