@@ -1,5 +1,56 @@
 # Developer Diaries
 
+## August 05
+
+### Findings
+
+- Well, now that we have the data and they don't quite match what we want, what
+  can we do...
+  - However, before giving up all hope, write some test files that assert the
+    functionality of the sub-minute delays and whatnot. It's highly possible
+    that something there isn't accurate and is causing the inaccuracy to creep
+    through the estimation
+  - Ideas:
+    - Take out the exact trip for which you have the real data and trace
+      through the interpolation. How everything happened and how did we come to
+      the conclusion that we did. It could be just the nature of the beast or
+      it could be a bug
+    - If the interpolation is consistently inaccurate, could that still be used
+      to train a model? Because if some kind of normalization happened, we
+      might end up having something very close to the real data!
+
+## August 03
+
+### Notes
+
+- For some reason, trips from previous days are still creeping up in the
+  current day's trips despite fixing records. They can be easily found because
+  for some reason their delays are in the 80k's
+- Need to write a small script to convert the timedeltas in the real data to
+  timestamps so they can be compared against the interpolated ones
+- Need to write in the Notebook a small chunk to get a trip by its ID and
+  display all info about it, including cross-referencing the stop ID's and
+  writing the stops' names instead of numbers
+
+## July 29
+
+### Notes
+
+- Possible threat to validity: Moving trips to the day on which they start
+  might cause problems when considering the trips that happen on Saturday
+  because they will contain some that happened on Friday; skewing the results.
+  Maybe the trip still belongs to the day before if the time in which it
+  happened is still $2X:NN:NN$ where $X = 0, 1, \dots, 6$
+- We have two ways to represent a trip:
+    1. A sequence of stops and a sequence of timestamps for each stop
+    2. A sequence of stops, a starting time, and a sequence of timesdeltas that
+       are the time it takes between each pair of stops
+- Writing the trips as a start time and the time deltas between the stops helps
+  identify weird routes
+    - Related experiment: For each day, convert the trips into sequences of
+      stops and compare them. This way, you'll be able to distinguish between
+      busses 7 and 7N, 6 and 6A and 6B, etc.
+
 ## July 27
 
 ### Notes

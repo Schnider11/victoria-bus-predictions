@@ -44,32 +44,29 @@ changing?
     stopped only if we captured it or should we apply some +5 seconds per stop?
   - Converting polar coordinates into geographical coordinates is trivial
   - Daniel believes that the average speed might not be an accurate
-      representation of the actual speed of a route because there are many
-      stops and slow-downs that might cause the average speed to look smaller
-      than it actually is
+    representation of the actual speed of a route because there are many stops
+    and slow-downs that might cause the average speed to look smaller than it
+    actually is
   - We need to determine a metric of Distance (Eucledian, Manhaten, etc.)
     - Look up K-means
     - Distance between two trips
-    - If the distance metric is good, then the following is true: Distance
-          is always positive when you're comparing two consecutive trips and it
-          follows the triangular inequality
+    - If the distance metric is good, then the following is true: Distance is
+      always positive when you're comparing two consecutive trips and it
+      follows the triangular inequality
     - If the distance between the actual trip and the expected trips
-          becomes smaller the closer it is to the actual trip date, then they
-          might be doing some prediction behind the scenes. We don't know that
+      becomes smaller the closer it is to the actual trip date, then they might
+      be doing some prediction behind the scenes. We don't know that
   - Define how to compare the days based on their trips
     - Aggregation is not trivial, think about and define it well
     - For example, we shouldn't be comparing average delays because maybe
-          longer trips will have longer delays and one of the days in which we
-          compare has more long trips than the other day
+      longer trips will have longer delays and one of the days in which we
+      compare has more long trips than the other day
       - Maybe compare on a route-by-route basis?
 - [ ] Adjust the trips dumping script so it only dumps in a reasonable way
   where there isn't much repetition. For example, currently the script follows
   the original data well because every line contains the trip id, vehicle id,
   etc. However, much of that repetition can be reduced by having all stops that
   belong to a certain trip on one line so it's like a list of stops
-- [ ] Figure out a way to compare the actual data recorded while out on the bus
-  to the interpolated trips. Maybe convert the real ones into a similar format
-  and just compare?
 - [ ] Find out if the timestamps in trip data correspond to both a timedelta
   between two consecutive stops and an approximate wait time for one of the
   stops, or if it only considers timedelta.
@@ -86,7 +83,6 @@ changing?
   Then, which of the following is true:
   $$\Delta_{12} \stackrel{?}{=} t_3 - t_1, \Delta_{12} \stackrel{?}{=} t_4 -
   t_1, \Delta_{12} \stackrel{?}{=} t_4 - t_2$$
-
 
 ## Done
 
@@ -176,3 +172,6 @@ information ![img](images/vehicleupdates_missing_info.png)
     - Is the bus sticking to the timetable or is it running behind on some
           stops?
   - Maybe there are a number of metrics that none of them are good
+- [x] Figure out a way to compare the actual data recorded while out on the bus
+  to the interpolated trips. Maybe convert the real ones into a similar format
+  and just compare?
