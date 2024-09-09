@@ -5,7 +5,7 @@ import sys
 import pandas as pd
 
 
-def get_df_date_format(date):
+def get_df_date_format(date: datetime.datetime) -> str:
     return date.strftime("%Y-%m-%d")
 
 def get_new_file_name(date, rec_type):

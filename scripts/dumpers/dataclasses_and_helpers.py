@@ -76,8 +76,8 @@ class AbstractStop:
         return ",".join(
             [
                 self.stop_sequence,
-                self.arrival_timestamp,
-                self.departure_timestamp,
+                str(self.arrival_timestamp),
+                str(self.departure_timestamp),
                 self.stop_id,
             ]
         )
@@ -252,6 +252,9 @@ class VehicleUpdates:
     route_id: str
     direction_id: np.int8
     updates: list[VehicleUpdate]
+    
+    def __eq__(self, other) -> bool:
+        return self.trip_id == other.trip_id
 
 def create_base_vehicle_updates(df_row):
     return VehicleUpdates(
@@ -374,7 +377,7 @@ def create_base_actual_trip(vechileupdates: VehicleUpdates):
         vechileupdates.start_time,
         vechileupdates.start_date,
         vechileupdates.route_id,
-        vechileupdates.direction_id,
+        np.int8(vechileupdates.direction_id),
         []
     )
 

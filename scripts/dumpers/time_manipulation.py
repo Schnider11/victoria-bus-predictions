@@ -27,6 +27,12 @@ def normalize_time(start_time, start_date):
 
     return start_time, start_date
 
+def format_to_datetime(timedate_str: str) -> datetime:
+    """
+        timedate_str: str in the format `HH:MM:SSYYYYMMDD`
+    """
+    return datetime.strptime(timedate_str, "%H:%M:%S%Y%m%d")
+
 def fix_stop_times_on_first_stop(trip_id, curr_stop, start_time, start_date):
     """
         Functional description:
