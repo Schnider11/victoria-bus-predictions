@@ -19,8 +19,10 @@ vim -s vim_make_header_first_line.keys /home/jack/uvic/honors-proj/csv/trips_${d
 
 # Fix records
 sort -t ',' -k 4,4 -k 3,3  -k 1,1d -k 6,6h -k 7,7 -k 11,11n -k 13,13n /home/jack/uvic/honors-proj/csv/vehicleupdates_${date}.csv -o /home/jack/uvic/honors-proj/csv/vehicleupdates_${date}.csv
-python fix_records.py /home/jack/uvic/honors-proj/csv/vehicleupdates_${date}.csv vehicle
-python fix_records.py /home/jack/uvic/honors-proj/csv/trip_${date}_abstract_no_dups.csv trip
+# python fix_records.py /home/jack/uvic/honors-proj/csv/vehicleupdates_${date}.csv vehicle
+python ignore_records.py /home/jack/uvic/honors-proj/csv/vehicleupdates_${date}.csv vehicle
+# python fix_records.py /home/jack/uvic/honors-proj/csv/trip_${date}_abstract_no_dups.csv trip
+python ignore_records.py /home/jack/uvic/honors-proj/csv/trip_${date}_abstract_no_dups.csv trip
 
 # Fixing the header because it gets messed up by sorting
 vim -s vim_make_header_first_line.keys /home/jack/uvic/honors-proj/csv/vehicleupdates_${date}.csv
