@@ -1,5 +1,49 @@
 # Developer Diaries
 
+### Deliverables TODO
+
+- Make a route-view where the x-axis are stops and y-axis is delay **in
+  minutes**
+  - Do that for all routes in both directions
+  - Do multiple plots on top of each other. Each plot could be dots that are
+    connected:
+    1. Minimum
+    2. Maximum
+    3. Median
+    4. 25th percentile
+    5. 75th percentile
+- Make a stop-view with stops 100390 and 100383 using route 7 in both
+  directions. The x-axis is the day which includes the median of all trips of
+  that route and the y-axis is the delay **in minutes**
+  - Maybe also do lines that show 25th and 75th percentiles
+
+## August 12
+
+### Notes
+
+- Evaluation that is an approximation, but the metric is precise but we do not
+  have the data specifically! We do not have an approximation of the quality
+  measure, we have a well-defined metric that operates on approximated data
+- Note that we are **not** aggregating results per route/day/hour, but we are
+  displaying them using a box plot or something similar. What's getting
+  aggregated are the per-trip stops numbers
+- We have two views of the data:
+  - Per route, which is what we've been doing so far
+  - Per stop per route, which shows for a given stop in a route how
+    consistent/on-schedule the bus was
+    - For a given stop and route, do a plot distribution that should look like
+      a normal distribution slightly skewed to the right
+        - Find a few stops that are interesting and present them as findings.
+          Maybe 3-5 trips and a few interesting stops from each
+        - For example, third stop on route 7. Inspect the data and find that
+          information and, using that, create a plot using maybe 100 trips at
+          random?
+- Our argument for using the harmonic average vs normal average is that the
+  normal average might hide information where if a trip was very delayed at the
+  start but then the bus sped up to the point it became ahead, then the average
+  will show that as a good trip (assuming that the numbers align). However, the
+  harmonic mean will preserve that variance
+
 ## August 05
 
 ### Findings
