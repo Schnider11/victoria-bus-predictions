@@ -51,7 +51,7 @@ def interpolate_in_motion(trip_id: str, vu: VehicleUpdate):
     )
 
     p = vu.pos.to_point()
-    
+
     # Get stop information
     s1 = stops[t.stops[vu.current_stop_sequence - 2].stop_id].to_point()
     s2 = stops[t.stops[vu.current_stop_sequence - 1].stop_id].to_point()
@@ -173,104 +173,118 @@ def interpolate_vehicleupdates(vu: VehicleUpdates):
             i,
             t.stops[i - 1].stop_id
         )
+
         arr, dep = False, False
-        # for j in range(1, 4):
-        for j in range(1, 3):
-            # Use the left one to interpolate arrival time and the right to
-            # interpolate departure time. If only one of the two exist, then
-            # update both timestamps to be the same. If we **already** have a
-            # stopped record of the stop, then just update one of the
-            # timestamps so that it remains consistent, i.e., arrival <=
-            # departure.
+        if i in stopped:
+            # It is possible that we might need to adjust how this works to
+            # also update the arrival and departure information of stops where
+            # we caught the stop timestamp so that it's more realistic. For
+            # now, just estimate the stopping at as the stop timestamp.
+            abstract_timestamp = get_subminute_timedelta(vu.trip_id, i - 1) + \
+                            t.stops[i - 1].timestamp
 
-            # The +1 is here in case we caught the base on route
-            # to our desired stop.
-            if ((i + 1 - j) in in_motion or (i - j) in stopped) and not arr:
-                est = None
-                timestamp = None
+            stopped[i].departure_delay = stopped[i].departure_timestamp - abstract_timestamp
+            stopped[i].arrival_delay = stopped[i].arrival_timestamp - abstract_timestamp
+            interpolated_stops[i] = stopped[i]
+        else:
+            for j in range(1, 3):
+                # Use the left one to interpolate arrival time and the right to
+                # interpolate departure time. If only one of the two exist, then
+                # update both timestamps to be the same. If we **already** have a
+                # stopped record of the stop, then just update one of the
+                # timestamps so that it remains consistent, i.e., arrival <=
+                # departure.
 
-                if (i + 1 - j) in in_motion:
-                    # Use the interpolation method to estimate and
-                    # add up timedeltas
-                    est = interpolate_stop(vu.trip_id, i, in_motion[i + 1 - j][0])
-                    timestamp = in_motion[i + 1 - j][0].timestamp
-                
-                if (i - j) in stopped and est is None:
-                    # Add up timedeltas as the interpolation
-                    est = interpolate_stop(vu.trip_id, i, stopped[i - j])
-                    timestamp = stopped[i - j].arrival_timestamp
+                # The +1 is here in case we caught the base on route
+                # to our desired stop.
+                if (((i + 1 - j) in in_motion or (i - j) in stopped) 
+                        and not arr):
+                    est = None
+                    timestamp = None
 
-                if est is not None:
-                    # This timestamp needs to account for when there are multiple
-                    # stops that share the same minute, then we should be adding
-                    # that difference to this timestamp!
-                    abstract_timestamp = get_subminute_timedelta(vu.trip_id, i - 1) + \
-                        t.stops[i - 1].timestamp
+                    if (i + 1 - j) in in_motion:
+                        # Use the interpolation method to estimate and
+                        # add up timedeltas
+                        est = interpolate_stop(vu.trip_id, i, in_motion[i + 1 - j][0])
+                        timestamp = in_motion[i + 1 - j][0].timestamp
+                    
+                    if (i - j) in stopped and est is None:
+                        # Add up timedeltas as the interpolation
+                        est = interpolate_stop(vu.trip_id, i, stopped[i - j])
+                        timestamp = stopped[i - j].arrival_timestamp
 
-                    if curr_stop.departure_timestamp == np.inf:
-                        curr_stop.departure_timestamp = timestamp + est
-                        curr_stop.departure_delay = curr_stop.departure_timestamp - abstract_timestamp
+                    if est is not None:
+                        # This timestamp needs to account for when there are multiple
+                        # stops that share the same minute, then we should be adding
+                        # that difference to this timestamp!
+                        abstract_timestamp = get_subminute_timedelta(vu.trip_id, i - 1) + \
+                            t.stops[i - 1].timestamp
 
-                    # Verify that the numbers make sense
-                    if timestamp + est <= curr_stop.departure_timestamp:
-                        curr_stop.arrival_timestamp = round(timestamp + est)
-                        curr_stop.arrival_delay = round(curr_stop.arrival_timestamp - abstract_timestamp)
+                        if curr_stop.departure_timestamp == np.inf:
+                            curr_stop.departure_timestamp = round(timestamp + est)
+                            curr_stop.departure_delay = round(curr_stop.departure_timestamp - abstract_timestamp)
 
-                        # if vu.trip_id == "10070488:5680783:5691013":
-                        #     print(vu.trip_id, "arr", i, abstract_timestamp, curr_stop.arrival_timestamp, curr_stop.arrival_delay)
+                        # Verify that the numbers make sense
+                        if round(timestamp + est) <= curr_stop.departure_timestamp:
+                            curr_stop.arrival_timestamp = round(timestamp + est)
+                            curr_stop.arrival_delay = round(curr_stop.arrival_timestamp - abstract_timestamp)
 
-                        arr = True
+                            # if vu.trip_id == "10070488:5680783:5691013":
+                            #     print(vu.trip_id, "arr", i, abstract_timestamp, curr_stop.arrival_timestamp, curr_stop.arrival_delay)
 
-            if ((i + j) in in_motion or (i + j) in stopped) and not dep:
-                est = None
-                timestamp = None
+                            arr = True
 
-                if (i + j) in in_motion:
-                    # Use the interpolation method to estimate and
-                    # add up timedeltas
-                    est = interpolate_stop(vu.trip_id, i, in_motion[i + j][0])
-                    timestamp = in_motion[i + j][0].timestamp
-                
-                if (i + j) in stopped and est is None:
-                    # Add up timedeltas as the interpolation
-                    est = interpolate_stop(vu.trip_id, i, stopped[i + j])
-                    timestamp = stopped[i + j].departure_timestamp
+                if (((i + j) in in_motion or (i + j) in stopped)
+                        and not dep):
+                    est = None
+                    timestamp = None
 
-                if est is not None:
-                    # This timestamp needs to account for when there are multiple
-                    # stops that share the same minute, then we should be adding
-                    # that difference to this timestamp!
-                    abstract_timestamp = get_subminute_timedelta(vu.trip_id, i - 1) + \
-                        t.stops[i - 1].timestamp
+                    if (i + j) in in_motion:
+                        # Use the interpolation method to estimate and
+                        # add up timedeltas
+                        est = interpolate_stop(vu.trip_id, i, in_motion[i + j][0])
+                        timestamp = in_motion[i + j][0].timestamp
+                    
+                    if (i + j) in stopped and est is None:
+                        # Add up timedeltas as the interpolation
+                        est = interpolate_stop(vu.trip_id, i, stopped[i + j])
+                        timestamp = stopped[i + j].departure_timestamp
 
-                    if curr_stop.arrival_timestamp == np.inf:
-                        curr_stop.arrival_timestamp = round(timestamp + est)
-                        curr_stop.arrival_delay = round(curr_stop.arrival_timestamp - abstract_timestamp)
+                    if est is not None:
+                        # This timestamp needs to account for when there are multiple
+                        # stops that share the same minute, then we should be adding
+                        # that difference to this timestamp!
+                        abstract_timestamp = get_subminute_timedelta(vu.trip_id, i - 1) + \
+                            t.stops[i - 1].timestamp
 
-                    # Verify that the numbers make sense
-                    if timestamp + est >= curr_stop.arrival_timestamp:
-                        curr_stop.departure_timestamp = round(timestamp + est)
-                        curr_stop.departure_delay = round(curr_stop.departure_timestamp - abstract_timestamp)
-                        
-                        # if vu.trip_id == "10070488:5680783:5691013":
-                        #     print(vu.trip_id, "dep", i, abstract_timestamp, curr_stop.arrival_timestamp, curr_stop.arrival_delay)
+                        if curr_stop.arrival_timestamp == np.inf:
+                            curr_stop.arrival_timestamp = round(timestamp + est)
+                            curr_stop.arrival_delay = round(curr_stop.arrival_timestamp - abstract_timestamp)
 
-                        dep = True
+                        # Verify that the numbers make sense
+                        if round(timestamp + est) >= curr_stop.arrival_timestamp:
+                            curr_stop.departure_timestamp = round(timestamp + est)
+                            curr_stop.departure_delay = round(curr_stop.departure_timestamp - abstract_timestamp)
+                            
+                            # if vu.trip_id == "10070488:5680783:5691013":
+                            #     print(vu.trip_id, "dep", i, abstract_timestamp, curr_stop.arrival_timestamp, curr_stop.arrival_delay)
 
-            if i > 1 and i < n_stops:
-                if arr or dep:
-                    interpolated_stops[i] = curr_stop
-                    break
-            else:
-                # First and last stop are edge cases
-                if i == 1:
-                    if dep:
+                            dep = True
+
+                if i > 1 and i < n_stops:
+                    if arr or dep:
                         interpolated_stops[i] = curr_stop
                         break
-                elif i == n_stops:
-                    if arr:
-                        interpolated_stops[i] = curr_stop
-                        break
+                else:
+                    # First and last stop are edge cases
+                    if i == 1:
+                        if dep:
+                            interpolated_stops[i] = curr_stop
+                            break
+                    elif i == n_stops:
+                        if arr:
+                            interpolated_stops[i] = curr_stop
+                            break
 
         if i not in interpolated_stops:
             print("Could not find stop {}. Bad trip {}, ignoring".format(i, vu.trip_id))
@@ -301,7 +315,7 @@ def process_vehicleupdates_file(
     }
 
     df_vu = pd.read_csv(path + "/" + vu_file_name, dtype=vu_dtypes)
-    output_file_name = "interpolated" + vu_file_name.split("_")[1]
+    output_file_name = "interpolated_" + vu_file_name.split("_")[1]
     output_file = open(path + "/" + output_file_name, "w")
     write_file_header(output_file)
 
@@ -313,7 +327,7 @@ def process_vehicleupdates_file(
 
         if curr_trip is None:
             curr_trip = create_base_vehicle_updates(row)
-            start_idx = i            
+            start_idx = i
         elif t != curr_trip:
             curr_trip = t
             t = process_vehicle_updates(df_vu[start_idx:i])
